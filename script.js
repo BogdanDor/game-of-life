@@ -10,10 +10,12 @@ document.onreadystatechange = function() {
   }
 }
 
-const initState = [
-  [0,1,0],
-  [1,0,1],
-  [0,1,0]
+const initGeneration = [
+  [0,0,0,0,0],
+  [0,1,1,1,0],
+  [0,0,0,0,0],
+  [0,0,0,0,0],
+  [0,0,0,0,0]
 ];
 
 function main() {
@@ -24,7 +26,9 @@ function main() {
   const fieldWidth = Math.floor((fieldCanvas.clientWidth - lineWidth) / (lineWidth + cellWidth));
   const fieldHeight = Math.floor((fieldCanvas.clientHeight - lineWidth) / (lineWidth + cellWidth));
   drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, fieldCtx);
-  drawLiveCells(cellWidth, lineWidth, fieldCtx, initState);
+  drawLiveCells(cellWidth, lineWidth, fieldCtx, initGeneration);
+  let nextGeneration = getNextGeneration(initGeneration);
+  console.log(nextGeneration);
 }
 
 function drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, context) {
@@ -66,4 +70,49 @@ function drawLiveCells(cellWidth, lineWidth, context, state) {
       }
     }
   }
+}
+
+function getNextGeneration(currentGeneration) {
+  let result = [];
+  for (let i=0; i<currentGeneration.length; i++) {
+    result[i] = [];
+    for (let j=0; j<currentGeneration[i].length; j++) {
+      result[i][j] = getNextState(i, j);
+    }
+  }
+  return result;
+
+  function getNextState(i, j) {
+    let countNeighbours = getCountLiveNeighbours(i,j);
+    if (currentGeneration[i][j] === 0) {
+      if (countNeighbours === 3) {
+        return 1;
+      }
+    }
+    return
+  }
+
+  function getCountLiveNeighbours(i, j) {
+    let result = 0;
+    calcLiveNeighbours(i-1, j-1);
+    calcLiveNeighbours(i, j-1);
+    calcLiveNeighbours(i+1, j-1);
+
+    calcLiveNeighbours(i-1, j);
+    calcLiveNeighbours(i+1, j);
+
+    calcLiveNeighbours(i-1, j+1);
+    calcLiveNeighbours(i, j+1);
+    calcLiveNeighbours(i+1, j+1);
+    return result;
+
+    function calcLiveNeighbours(i, j) {
+      if (i<0 || i>=currentGeneration.length || j<0 || j>=currentGeneration[i].length) {
+        return;
+      }
+      if (currentGeneration[i][j] === 1) {
+        result++;
+      }
+    }
+  } 
 }
