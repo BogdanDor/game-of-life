@@ -10,6 +10,12 @@ document.onreadystatechange = function() {
   }
 }
 
+const initState = [
+  [0,1,0],
+  [1,0,1],
+  [0,1,0]
+];
+
 function main() {
   const fieldCanvas = document.getElementById('field');
   const fieldCtx = fieldCanvas.getContext('2d');
@@ -18,6 +24,7 @@ function main() {
   const fieldWidth = Math.floor((fieldCanvas.clientWidth - lineWidth) / (lineWidth + cellWidth));
   const fieldHeight = Math.floor((fieldCanvas.clientHeight - lineWidth) / (lineWidth + cellWidth));
   drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, fieldCtx);
+  drawLiveCells(cellWidth, lineWidth, fieldCtx, initState);
 }
 
 function drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, context) {
@@ -44,6 +51,19 @@ function drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, context) {
       let y = (lineWidth + cellWidth) * i + lineWidth/2;
       context.moveTo(0, y);
       context.lineTo(width, y);
+    }
+  }
+}
+
+function drawLiveCells(cellWidth, lineWidth, context, state) {
+  context.fillStyle = '#171717';
+  for (let i=0; i<state.length; i++) {
+    for (let j=0; j<state[i].length; j++) {
+      if (state[i][j] == 1) {
+        let x = (lineWidth + cellWidth) * j + lineWidth;
+        let y = (lineWidth + cellWidth) * i + lineWidth;
+        context.fillRect(x, y, cellWidth, cellWidth);  
+      }
     }
   }
 }
