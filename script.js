@@ -88,8 +88,12 @@ function getNextGeneration(currentGeneration) {
       if (countNeighbours === 3) {
         return 1;
       }
+      return 0;
     }
-    return
+    if (countNeighbours === 2 || countNeighbours === 3) {
+      return 1;
+    }
+    return 0;
   }
 
   function getCountLiveNeighbours(i, j) {
