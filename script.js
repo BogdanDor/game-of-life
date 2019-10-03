@@ -25,10 +25,15 @@ function main() {
   const lineWidth = 1;
   const fieldWidth = Math.floor((fieldCanvas.clientWidth - lineWidth) / (lineWidth + cellWidth));
   const fieldHeight = Math.floor((fieldCanvas.clientHeight - lineWidth) / (lineWidth + cellWidth));
+  let currentGeneration = initGeneration;
   drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, fieldCtx);
-  drawLiveCells(cellWidth, lineWidth, fieldCtx, initGeneration);
-  let nextGeneration = getNextGeneration(initGeneration);
-  console.log(nextGeneration);
+  drawLiveCells(cellWidth, lineWidth, fieldCtx, currentGeneration);
+  document.addEventListener('keyup', function(event) {
+    currentGeneration = getNextGeneration(currentGeneration);
+    fieldCtx.clearRect(0, 0, fieldCanvas.clientWidth, fieldCanvas.clientHeight);
+    drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, fieldCtx);
+    drawLiveCells(cellWidth, lineWidth, fieldCtx, currentGeneration);
+  });
 }
 
 function drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, context) {
