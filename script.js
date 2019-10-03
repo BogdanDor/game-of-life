@@ -10,12 +10,10 @@ document.onreadystatechange = function() {
   }
 }
 
-const initGeneration = [
-  [0,0,0,0,0],
-  [0,1,1,1,0],
-  [0,0,0,0,0],
-  [0,0,0,0,0],
-  [0,0,0,0,0]
+const glider = [
+  [0,1,0],
+  [0,0,1],
+  [1,1,1]
 ];
 
 function main() {
@@ -25,7 +23,8 @@ function main() {
   const lineWidth = 1;
   const fieldWidth = Math.floor((fieldCanvas.clientWidth - lineWidth) / (lineWidth + cellWidth));
   const fieldHeight = Math.floor((fieldCanvas.clientHeight - lineWidth) / (lineWidth + cellWidth));
-  let currentGeneration = initGeneration;
+  let currentGeneration = getEmptyGeneration(fieldWidth, fieldHeight);
+  setGeneration(glider, currentGeneration);
   drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, fieldCtx);
   drawLiveCells(cellWidth, lineWidth, fieldCtx, currentGeneration);
   document.addEventListener('keyup', function(event) {
@@ -73,6 +72,25 @@ function drawLiveCells(cellWidth, lineWidth, context, state) {
         let y = (lineWidth + cellWidth) * i + lineWidth;
         context.fillRect(x, y, cellWidth, cellWidth);  
       }
+    }
+  }
+}
+
+function getEmptyGeneration(width, height) {
+  let result = [];
+  for (let i=0; i<height; i++) {
+    result[i] = [];
+    for (let j=0; j<width; j++) {
+      result[i][j] = 0;
+    }
+  }
+  return result;
+}
+
+function setGeneration(nextGeneration, currentGeneration) {
+  for (let i=0; i<nextGeneration.length; i++) {
+    for (let j=0; j<nextGeneration[i].length; j++) {
+      currentGeneration[i][j] = nextGeneration[i][j];
     }
   }
 }
