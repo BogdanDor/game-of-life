@@ -25,56 +25,61 @@ function main() {
   const fieldHeight = Math.floor((fieldCanvas.clientHeight - lineWidth) / (lineWidth + cellWidth));
   let currentGeneration = getEmptyGeneration(fieldWidth, fieldHeight);
   setGeneration(glider, currentGeneration);
-  drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, fieldCtx);
-  drawLiveCells(cellWidth, lineWidth, fieldCtx, currentGeneration);
+  drawField(currentGeneration, cellWidth, lineWidth, fieldCtx);
   document.addEventListener('keyup', function(event) {
     currentGeneration = getNextGeneration(currentGeneration);
     fieldCtx.clearRect(0, 0, fieldCanvas.clientWidth, fieldCanvas.clientHeight);
-    drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, fieldCtx);
-    drawLiveCells(cellWidth, lineWidth, fieldCtx, currentGeneration);
+    drawField(currentGeneration, cellWidth, lineWidth, fieldCtx);
   });
 }
 
-function drawField(fieldWidth, fieldHeight, cellWidth, lineWidth, context) {
-  context.strokeStyle = '#757472';
-  context.lineWidth = lineWidth;
-  context.beginPath();
+function drawField(generation, cellWidth, lineWidth, context) {
   drawVerticalLines();
   drawHorizontalLines();
-  context.closePath();
-  context.stroke();
+  drawLiveCells();
 
   function drawVerticalLines() {
-    let height = (lineWidth + cellWidth) * fieldWidth + lineWidth;
-    for (let i=0; i<=fieldWidth; i++) {
+    context.strokeStyle = '#757472';
+    context.lineWidth = lineWidth;
+    context.beginPath();
+    let y = (lineWidth + cellWidth) * generation.length + lineWidth;
+    for (let i=0; i<=generation[0].length; i++) {
       let x = (lineWidth + cellWidth) * i + lineWidth/2;
       context.moveTo(x, 0);
-      context.lineTo(x, height);
+      context.lineTo(x, y);
     }
+    context.closePath();
+    context.stroke();
   }
   
   function drawHorizontalLines() {
-    let width = (lineWidth + cellWidth) * fieldHeight + lineWidth;
-    for (let i=0; i<=fieldHeight; i++) {
+    context.strokeStyle = '#757472';
+    context.lineWidth = lineWidth;
+    context.beginPath();
+    let x = (lineWidth + cellWidth) * generation[0].length + lineWidth;
+    for (let i=0; i<=generation.length; i++) {
       let y = (lineWidth + cellWidth) * i + lineWidth/2;
       context.moveTo(0, y);
-      context.lineTo(width, y);
+      context.lineTo(x, y);
     }
+    context.closePath();
+    context.stroke();
   }
-}
 
-function drawLiveCells(cellWidth, lineWidth, context, state) {
-  context.fillStyle = '#171717';
-  for (let i=0; i<state.length; i++) {
-    for (let j=0; j<state[i].length; j++) {
-      if (state[i][j] == 1) {
-        let x = (lineWidth + cellWidth) * j + lineWidth;
-        let y = (lineWidth + cellWidth) * i + lineWidth;
-        context.fillRect(x, y, cellWidth, cellWidth);  
+  function drawLiveCells() {
+    context.fillStyle = '#171717';
+    for (let i=0; i<generation.length; i++) {
+      for (let j=0; j<generation[i].length; j++) {
+        if (generation[i][j] == 1) {
+          let x = (lineWidth + cellWidth) * j + lineWidth;
+          let y = (lineWidth + cellWidth) * i + lineWidth;
+          context.fillRect(x, y, cellWidth, cellWidth);  
+        }
       }
     }
   }
 }
+
 
 function getEmptyGeneration(width, height) {
   let result = [];
