@@ -10,26 +10,36 @@ document.onreadystatechange = function() {
   }
 }
 
-const glider = [
-  [0,1,0],
-  [0,0,1],
-  [1,1,1]
-];
-
 function main() {
   const fieldCanvas = document.getElementById('field');
+  const game = createGame(fieldCanvas);
+  game.start();
+}
+
+function createGame(fieldCanvas) {
+  const glider = [
+    [0,1,0],
+    [0,0,1],
+    [1,1,1]
+  ];
   const fieldCtx = fieldCanvas.getContext('2d');
   const cellWidth = 10;
   const lineWidth = 1;
   const fieldWidth = Math.floor((fieldCanvas.clientWidth - lineWidth) / (lineWidth + cellWidth));
-  const fieldHeight = Math.floor((fieldCanvas.clientHeight - lineWidth) / (lineWidth + cellWidth));
-  let currentGeneration = createGeneration(glider, fieldWidth, fieldHeight);
-  drawField(currentGeneration, cellWidth, lineWidth, fieldCtx);
-  document.addEventListener('keyup', function(event) {
-    currentGeneration = getNextGeneration(currentGeneration);
-    fieldCtx.clearRect(0, 0, fieldCanvas.clientWidth, fieldCanvas.clientHeight);
+  const fieldHeight = Math.floor((fieldCanvas.clientHeight - lineWidth) / (lineWidth + cellWidth));  
+  return {
+    start: start
+  }
+
+  function start() {
+    let currentGeneration = createGeneration(glider, fieldWidth, fieldHeight);
     drawField(currentGeneration, cellWidth, lineWidth, fieldCtx);
-  });
+    document.addEventListener('keyup', function(event) {
+      currentGeneration = getNextGeneration(currentGeneration);
+      fieldCtx.clearRect(0, 0, fieldCanvas.clientWidth, fieldCanvas.clientHeight);
+      drawField(currentGeneration, cellWidth, lineWidth, fieldCtx);
+    });  
+  }
 }
 
 function drawField(generation, cellWidth, lineWidth, context) {
