@@ -82,7 +82,12 @@ function createGame(fieldCanvas) {
       currentGeneration = getNextGeneration(currentGeneration);
       fieldCtx.clearRect(0, 0, fieldCanvas.clientWidth, fieldCanvas.clientHeight);
       drawField(currentGeneration, cellWidth, lineWidth, fieldCtx);
-    });  
+    });
+    document.addEventListener('touchend', function(event) {
+      currentGeneration = getNextGeneration(currentGeneration);
+      fieldCtx.clearRect(0, 0, fieldCanvas.clientWidth, fieldCanvas.clientHeight);
+      drawField(currentGeneration, cellWidth, lineWidth, fieldCtx);
+    })
   }
 
   function setInitialGeneration(newInitGeneration) {
