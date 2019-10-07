@@ -13,32 +13,80 @@ document.onreadystatechange = function() {
 function main() {
   const fieldCanvas = document.getElementById('field');
   const game = createGame(fieldCanvas);
+  const initialGenerationSelect = document.getElementById('initial-generation-select');
+  const initialGenerations = createInitialGenerations();
+  let initGeneration = initialGenerationSelect.options[initialGenerationSelect.selectedIndex].value;
+  game.setInitialGeneration(initialGenerations.get(initGeneration));
   game.start();
+  
+  initialGenerationSelect.addEventListener('change', function(event) {
+    initGeneration = initialGenerationSelect.options[initialGenerationSelect.selectedIndex].value;
+    game.setInitialGeneration(initialGenerations.get(initGeneration));
+    game.start();
+  })
 }
 
-function createGame(fieldCanvas) {
-  const glider = [
+function createInitialGenerations() {
+  const result = new Map();
+  result.set('Glider', [
     [0,1,0],
     [0,0,1],
     [1,1,1]
-  ];
+  ])
+  result.set('Block', [
+    [0,0,0],
+    [0,1,1],
+    [0,1,1]
+  ]);
+  result.set('Blinker', [
+    [0,1,0],
+    [0,1,0],
+    [0,1,0]
+  ]);
+  result.set('Pulsar', [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,1,1,1,0,0,0,1,1,1,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],
+    [0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],
+    [0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],
+    [0,0,0,1,1,1,0,0,0,1,1,1,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,1,1,1,0,0,0,1,1,1,0,0,0],
+    [0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],
+    [0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],
+    [0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,1,1,1,0,0,0,1,1,1,0,0,0],
+  ]);
+  return result;
+}
+
+function createGame(fieldCanvas) {
   const fieldCtx = fieldCanvas.getContext('2d');
   const cellWidth = 10;
   const lineWidth = 1;
   const fieldWidth = Math.floor((fieldCanvas.clientWidth - lineWidth) / (lineWidth + cellWidth));
   const fieldHeight = Math.floor((fieldCanvas.clientHeight - lineWidth) / (lineWidth + cellWidth));  
+  let initGeneration;
   return {
-    start: start
+    start: start,
+    setInitialGeneration: setInitialGeneration
   }
 
   function start() {
-    let currentGeneration = createGeneration(glider, fieldWidth, fieldHeight);
+    let currentGeneration = createGeneration(initGeneration, fieldWidth, fieldHeight);
+    fieldCtx.clearRect(0, 0, fieldCanvas.clientWidth, fieldCanvas.clientHeight);
     drawField(currentGeneration, cellWidth, lineWidth, fieldCtx);
     document.addEventListener('keyup', function(event) {
       currentGeneration = getNextGeneration(currentGeneration);
       fieldCtx.clearRect(0, 0, fieldCanvas.clientWidth, fieldCanvas.clientHeight);
       drawField(currentGeneration, cellWidth, lineWidth, fieldCtx);
     });  
+  }
+
+  function setInitialGeneration(newInitGeneration) {
+    initGeneration = newInitGeneration;
   }
 }
 
