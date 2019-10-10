@@ -5,3 +5,28 @@
   margin: 0;
   padding-top: 32px;
 }
+
+.menu {
+  display: none;
+  width: 240px;
+  font-size: 24px;
+  line-height: 1.5;
+}
+.menu__inner {
+  margin: 0;
+  list-style-type: none;
+}
+.menu__item { 
+  color: #585861; 
+  cursor: pointer;
+}
+.menu__item--active { color: #0707f7; }
+@media (min-width: 576px) {
+  .menu { display: block; }
+  .app { 
+    flex-direction: row; 
+    align-items: flex-start;
+  }
+  .initial-generation-label { display: none; }
+  .initial-generation-select { display: none; }
+}

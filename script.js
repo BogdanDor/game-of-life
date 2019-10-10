@@ -23,7 +23,20 @@ function main() {
     initGeneration = initialGenerationSelect.options[initialGenerationSelect.selectedIndex].value;
     game.setInitialGeneration(initialGenerations.get(initGeneration));
     game.start();
-  })
+  });
+
+  const menu = document.getElementById('menu').getElementsByClassName('menu__item');
+  for (let item of menu) {
+    item.addEventListener('click', function(event) {
+      initGeneration = item.textContent;
+      game.setInitialGeneration(initialGenerations.get(initGeneration));
+      game.start();
+      for (let i of menu) {
+        i.classList.remove('menu__item--active');
+      }
+      item.classList.add('menu__item--active');
+    })
+  }
 }
 
 function createInitialGenerations() {
