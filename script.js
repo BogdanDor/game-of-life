@@ -35,8 +35,14 @@ function main() {
         i.classList.remove('menu__item--active');
       }
       item.classList.add('menu__item--active');
+      document.getElementById('menu').classList.remove('menu--open');
     })
   }
+
+  const menuIcon = document.getElementById('menu-icon');
+  menuIcon.addEventListener('click', function(event) {
+    document.getElementById('menu').classList.toggle('menu--open');
+  });
 }
 
 function createInitialGenerations() {
