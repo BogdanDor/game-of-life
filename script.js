@@ -13,18 +13,11 @@ document.onreadystatechange = function() {
 function main() {
   const fieldCanvas = document.getElementById('field');
   const game = createGame(fieldCanvas);
-  const initialGenerationSelect = document.getElementById('initial-generation-select');
   const initialGenerations = createInitialGenerations();
-  let initGeneration = initialGenerationSelect.options[initialGenerationSelect.selectedIndex].value;
-  game.setInitialGeneration(initialGenerations.get(initGeneration));
+  let initGeneration = 'Glider';
+  game.setInitialGeneration(initialGenerations.get('Glider'));
   game.start();
   
-  initialGenerationSelect.addEventListener('change', function(event) {
-    initGeneration = initialGenerationSelect.options[initialGenerationSelect.selectedIndex].value;
-    game.setInitialGeneration(initialGenerations.get(initGeneration));
-    game.start();
-  });
-
   const menu = document.getElementById('menu').getElementsByClassName('menu__item');
   for (let item of menu) {
     item.addEventListener('click', function(event) {

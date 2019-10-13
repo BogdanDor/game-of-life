@@ -89,6 +89,3 @@
   .menu__item { color: #585861; }
   .menu__item--active { color: #0707f7; }
 }
-
-.initial-generation-label { display: none; }
-.initial-generation-select { display: none; }
