@@ -36,12 +36,14 @@ function main() {
       }
       item.classList.add('menu__item--active');
       document.getElementById('menu').classList.remove('menu--open');
-    })
+      document.getElementById('app').classList.remove('app--menu-open');
+    });
   }
 
   const menuIcon = document.getElementById('menu-icon');
   menuIcon.addEventListener('click', function(event) {
     document.getElementById('menu').classList.toggle('menu--open');
+    document.getElementById('app').classList.toggle('app--menu-open');
   });
 }
 
