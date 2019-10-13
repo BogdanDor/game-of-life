@@ -1,5 +1,6 @@
 .app {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   margin: 0;
@@ -9,27 +10,24 @@
 .header {
   z-index: 3;
   position: relative;
+  
   align-self: stretch;
   display: flex;
+  justify-content: center;
   align-items: center;
+  
+  width: 100%;
   height: 64px;
   color: #fff;
   background-color: royalblue;
 }
 .header__title { 
-  position: absolute;
-  left: 50%;
-  margin: 0;
-  transform: translateX(-50%);
   font-size: 24px;
-}
-@media (min-width: 576px) {
-  .header {
-    display: none;
-  }
 }
 
 .menu-icon { 
+  position: absolute;
+  left: 0;
   margin-left: 20px;
   cursor: pointer;
 }
@@ -71,16 +69,16 @@
   .app { 
     flex-direction: row; 
     align-items: flex-start;
-    padding-top: 32px;
   }
   .menu-icon { display: none; }
   .menu { 
     position: static;
     display: block; 
-    width: 240px;
+    width: 224px;
 
     margin-top: 0;
     padding-left: 32px;
+    min-height: unset;
     height: auto;
     text-align: left;
 
